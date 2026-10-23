@@ -1,0 +1,1 @@
+{"status":"PASS","queries":[{"query":"{project=\"linkme13\",service=\"nginx\",stream=\"access\"} | json","lines":10},{"query":"{project=\"linkme13\",service=\"app\"} | json | event=\"login_failed\"","lines":1},{"query":"{project=\"linkme13\",service=\"app\"} | json | level=\"error\"","lines":1}],"time":"2026-10-23T05:38:55.001Z"}

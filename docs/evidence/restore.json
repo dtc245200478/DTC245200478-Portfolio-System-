@@ -1,0 +1,10 @@
+{
+  "desktop": {
+    "status": "PASS",
+    "database_and_image_hashes": "restored exactly after deliberate modification"
+  },
+  "wsl": {
+    "status": "PASS",
+    "database_and_image_hashes": "restored exactly after deliberate modification"
+  }
+}

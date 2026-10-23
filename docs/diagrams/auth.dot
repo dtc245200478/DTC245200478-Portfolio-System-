@@ -1,0 +1,7 @@
+digraph Auth {
+graph [rankdir=TB,bgcolor="white",pad="0.3",fontname="Arial",fontsize=16,label="TÀI KHOẢN VÀ PHIÊN",labelloc=t];
+node [shape=record,style=filled,fillcolor="#F1F5EC",color="#768B68",fontname="Arial",fontsize=15,margin="0.2,0.15"];edge [fontname="Arial",fontsize=13,color="#59694F",penwidth=1.4];
+admins [label="{admins|PK id INT NOT NULL\lUQ username VARCHAR 80 NOT NULL\lpassword_hash VARCHAR 180 NOT NULL\l}"];
+sessions [label="{sessions|PK token_hash CHAR 64 NOT NULL\lFK admin_id INT NOT NULL\lexpires_at DATETIME NOT NULL\l}"];
+admins -> sessions [label="1 đến 0..*\nON DELETE CASCADE",dir=both,arrowtail=tee,arrowhead=crow];
+}

@@ -1,0 +1,8 @@
+{
+  "pages": 15,
+  "paper": "A4",
+  "renderer": "Microsoft Word PDF export + packaged render_docx rasterize",
+  "visual_review": "all 15 pages inspected; no clipping, overlap or broken page layout",
+  "docx_sha256": "bbc14b058211c98cea9ac8426b88e2479d0e253b527e70fe093e7e60f4bdd7ff",
+  "pdf_sha256": "4e23bc687e97b70945dd026fe76d710e2598837b7a458fcc98d95ca4ca5e56a8"
+}

@@ -72,7 +72,7 @@ Mật khẩu admin dùng scrypt, phiên lưu hash trong MySQL, cookie HttpOnly/S
 
 ## Giám sát
 
-Mở Grafana tại http://localhost:3004, tài khoản `admin`, mật khẩu trong `.local/secrets/grafana_password`. Dashboard **Link Me | Tổng quan vận hành** tự nạp với 10 panel. Prometheus ở http://localhost:9093; `/targets` có 5 job `prometheus`, `linkme`, `nginx`, `mysql`, `cadvisor`. Chờ khoảng 30 giây sau lần chạy đầu để có rate/CPU.
+Mở Grafana tại http://localhost:3004, tài khoản `admin`, mật khẩu trong `.local/secrets/grafana_password`. Dashboard **Link Me | Tổng quan vận hành** tự nạp với 13 panel (10 metrics và 3 log). Prometheus ở http://localhost:9093; `/targets` có 5 job `prometheus`, `linkme`, `nginx`, `mysql`, `cadvisor`. Chờ khoảng 30 giây sau lần chạy đầu để có rate/CPU.
 
 ```powershell
 Get-Content scripts/check-services.mjs -Raw | docker --context desktop-linux compose exec -T app node --input-type=module
@@ -83,3 +83,41 @@ docker compose exec -T app node --input-type=module < scripts/check-services.mjs
 ```
 
 Script xác nhận target up và CPU/RAM của app, Nginx, MySQL thuộc project `linkme13`; việc chỉ có metrics của Docker host không được coi là đạt. cAdvisor cần quyền privileged và đọc cgroup/socket của host, là ngoại lệ được ghi rõ. Không publish exporter ra host. Alert LinkMeTargetDown kích hoạt khi target giám sát mất trên 1 phút; chưa cấu hình gửi thông báo ra ngoài.
+
+## Log tập trung và LogQL
+
+Grafana → Explore → Loki. Ba truy vấn đã kiểm chứng nằm trong [observability/logql.md](observability/logql.md). Dashboard cũng có 3 panel log. Kiểm tra:
+
+```powershell
+Get-Content scripts/verify-logs.mjs -Raw | docker --context desktop-linux compose exec -T app node --input-type=module
+```
+
+```sh
+docker compose exec -T app node --input-type=module < scripts/verify-logs.mjs
+```
+
+Promtail đọc volume log của app/Nginx/MySQL ở chế độ chỉ đọc. Logrotate xoay file trên 5 MB, tối đa 3 bản, kiểm tra mỗi phút. Loki/Prometheus giữ dữ liệu 7 ngày. Promtail đã hết hỗ trợ ngày 02/03/2026, giữ lại theo đề; xem [thông báo Grafana](https://grafana.com/docs/loki/latest/send-data/promtail/).
+
+## Sao lưu và phục hồi
+
+Backup có `database.sql`, `uploads.tar.gz`, `manifest.json` với SHA-256; chứa dữ liệu tài khoản/phiên nên chỉ giữ trong `.local/backups`. Cùng một định dạng dùng được giữa hai engine.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/backup.ps1
+powershell -ExecutionPolicy Bypass -File scripts/restore.ps1 -BackupDir .local/backups/<thu-muc-backup>
+```
+
+```sh
+sh scripts/backup.sh
+sh scripts/restore.sh .local/backups/<thu-muc-backup>
+```
+
+Restore kiểm tra project/checksum, yêu cầu nhập `PHUC HOI LINK ME`, dừng app/Nginx, thay database và phục hồi ảnh rồi khởi động lại. `-ConfirmRestore` (PowerShell) hoặc `--confirm` (Bash) dành cho kiểm thử tự động đã chủ động chọn phục hồi. Ảnh cũ không còn tham chiếu được giữ trên volume. Mật khẩu quản trị sau restore theo database trong backup, không theo file mật khẩu khởi tạo trên máy đích.
+
+## Báo cáo và minh chứng
+
+- [Báo cáo Word](docs/Bao_Cao_Link_Me_Tran_Trung_Dung.docx) và [bản PDF](docs/Bao_Cao_Link_Me_Tran_Trung_Dung.pdf).
+- [Kịch bản demo](docs/Kich_Ban_Demo.md), [sơ đồ DOT/SVG/PNG](docs/diagrams/README.md), [ảnh và kết quả kiểm thử](docs/evidence).
+- App, Nginx, MySQL và các dịch vụ giám sát phù hợp chạy non-root. Ngoại lệ: cAdvisor cần privileged để đọc host; storage-init/log-storage-init cần root để đặt quyền volume; logrotate dùng root với capability giới hạn; phpMyAdmin Apache khởi tạo bằng root, worker phục vụ chạy www-data. Không mô tả tất cả container đều non-root.
+
+Nếu chạy cả hai engine đồng thời, dùng cổng khác nhau trong từng checkout hoặc biến môi trường; kiểm thử tại máy dùng Desktop 8088/8089/3004/9093, WSL 8188/8189/3104/9193. Không bật WSL Integration trong Ubuntu đã cài Docker Engine riêng.

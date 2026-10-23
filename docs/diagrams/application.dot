@@ -1,0 +1,18 @@
+digraph LinkMe {
+graph [rankdir=TB,bgcolor="white",pad="0.25",nodesep="0.45",ranksep="0.55",fontname="Arial",fontsize=16,label="LINK ME   LUỒNG TRIỂN KHAI ỨNG DỤNG",labelloc=t];
+node [shape=box,style="rounded,filled",fillcolor="#F1F5EC",color="#768B68",fontname="Arial",fontsize=15,margin="0.22,0.15"];edge [fontname="Arial",fontsize=12,color="#59694F",penwidth=1.4];
+browser [label="Trình duyệt\nKhách xem và quản trị viên",fillcolor="#FFFFFF"];
+subgraph cluster_compose { label="Docker Compose  project linkme13";fontname="Arial";fontsize=15;color="#BDC7B7";style=rounded;
+nginx [label="Nginx non root\nReverse proxy và security headers"];
+app [label="Next.js 16 và Node.js 24\nPortfolio   API quản trị   Phiên và CSRF"];
+mysql [label="MySQL 8.4\nNội dung   Tài khoản   Phiên",shape=cylinder];
+pma [label="phpMyAdmin\nQuản trị database"];
+images [label="Volume uploads\nẢnh WebP",shape=folder];
+}
+browser -> nginx [label="HTTP localhost:8088"];
+nginx -> app [label="HTTP app:3000"];
+app -> mysql [label="SQL TCP 3306\nTài khoản app chỉ DML"];
+browser -> pma [label="HTTP localhost:8089"];
+pma -> mysql [label="SQL TCP 3306"];
+app -> images [label="Đọc và ghi file"];
+}

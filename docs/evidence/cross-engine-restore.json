@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "database": "all table hashes matching",
+  "backup_images": "all image hashes matching",
+  "unreferenced_old_files": "retained as documented"
+}

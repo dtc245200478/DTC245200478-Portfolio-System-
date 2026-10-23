@@ -1,0 +1,360 @@
+{
+  "desktop": {
+    "status": "PASS",
+    "services": {
+      "promtail": {
+        "user": "10001:10001",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "grafana": {
+        "user": "472:472",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {
+          "3000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "3004"
+            }
+          ]
+        },
+        "state": "running"
+      },
+      "loki": {
+        "user": "10001:10001",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "log-storage-init": {
+        "user": "0:0",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "exited"
+      },
+      "logrotate": {
+        "user": "root",
+        "readOnly": false,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "nginx-exporter": {
+        "user": "65534:65534",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "prometheus": {
+        "user": "65534:65534",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {
+          "9090/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "9093"
+            }
+          ]
+        },
+        "state": "running"
+      },
+      "cadvisor": {
+        "user": "root",
+        "readOnly": false,
+        "privileged": true,
+        "capDrop": null,
+        "ports": {},
+        "state": "running"
+      },
+      "mysqld-exporter": {
+        "user": "65534:65534",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "app": {
+        "user": "1000:1000",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "migrate": {
+        "user": "1000:1000",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "exited"
+      },
+      "mysql": {
+        "user": "999:999",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "nginx": {
+        "user": "101:101",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {
+          "8080/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "8088"
+            }
+          ]
+        },
+        "state": "running"
+      },
+      "phpmyadmin": {
+        "user": "root",
+        "readOnly": false,
+        "privileged": false,
+        "capDrop": null,
+        "ports": {
+          "80/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "8089"
+            }
+          ]
+        },
+        "state": "running"
+      },
+      "storage-init": {
+        "user": "0:0",
+        "readOnly": false,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "exited"
+      }
+    }
+  },
+  "wsl": {
+    "status": "PASS",
+    "services": {
+      "grafana": {
+        "user": "472:472",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {
+          "3000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "3104"
+            }
+          ]
+        },
+        "state": "running"
+      },
+      "promtail": {
+        "user": "10001:10001",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "loki": {
+        "user": "10001:10001",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "log-storage-init": {
+        "user": "0:0",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "exited"
+      },
+      "logrotate": {
+        "user": "root",
+        "readOnly": false,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "nginx-exporter": {
+        "user": "65534:65534",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "prometheus": {
+        "user": "65534:65534",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {
+          "9090/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "9193"
+            }
+          ]
+        },
+        "state": "running"
+      },
+      "cadvisor": {
+        "user": "root",
+        "readOnly": false,
+        "privileged": true,
+        "capDrop": null,
+        "ports": {},
+        "state": "running"
+      },
+      "mysqld-exporter": {
+        "user": "65534:65534",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "app": {
+        "user": "1000:1000",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "migrate": {
+        "user": "1000:1000",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "exited"
+      },
+      "mysql": {
+        "user": "999:999",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "running"
+      },
+      "nginx": {
+        "user": "101:101",
+        "readOnly": true,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {
+          "8080/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "8188"
+            }
+          ]
+        },
+        "state": "running"
+      },
+      "phpmyadmin": {
+        "user": "root",
+        "readOnly": false,
+        "privileged": false,
+        "capDrop": null,
+        "ports": {
+          "80/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "8189"
+            }
+          ]
+        },
+        "state": "running"
+      },
+      "storage-init": {
+        "user": "0:0",
+        "readOnly": false,
+        "privileged": false,
+        "capDrop": [
+          "ALL"
+        ],
+        "ports": {},
+        "state": "exited"
+      }
+    }
+  }
+}

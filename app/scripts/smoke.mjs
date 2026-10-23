@@ -1,0 +1,40 @@
+import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import {randomBytes} from 'node:crypto';import sharp from 'sharp';import mysql from 'mysql2/promise';
+const base=process.env.BASE_URL||'http://nginx:8080',origin=base;let cookie='',csrf='',count=0;
+const password=readFileSync(process.env.ADMIN_PASSWORD_FILE,'utf8').trim();
+async function req(path,method='GET',body,expected=200,extra={}){const headers={origin,...(body instanceof FormData?{}:{'Content-Type':'application/json'}),...(cookie?{cookie}:{}),...(csrf?{'x-csrf-token':csrf}:{}),...extra};const res=await fetch(base+path,{method,headers,...(body?{body:body instanceof FormData?body:JSON.stringify(body)}:{})});assert.equal(res.status,expected,method+' '+path+' '+await res.clone().text());const set=res.headers.get('set-cookie');if(set)cookie=set.split(';')[0];count++;return res;}
+const page=await req('/');assert.match(await page.text(),/Trần Trung Dũng/);for(const h of ['x-content-type-options','x-frame-options','content-security-policy','permissions-policy'])assert.ok(page.headers.get(h),h);
+await req('/health/live');await req('/health/ready');await req('/metrics','GET',undefined,404);await req('/projects/link-me');await req('/projects/not-found','GET',undefined,404);
+await req('/api/admin/projects','GET',undefined,401);
+await req('/api/admin/login','POST',{username:'admin',password:'wrong-test-password'},401);
+const login=await req('/api/admin/login','POST',{username:'admin',password});const l=await login.json();csrf=l.csrf;assert.match(login.headers.get('set-cookie'),/HttpOnly/i);assert.match(login.headers.get('set-cookie'),/SameSite=Strict/i);
+assert.equal((await (await req('/api/admin/session')).json()).csrf,csrf);
+await req('/api/admin/skills','POST',{name:'bad'},403,{'x-csrf-token':'wrong'});
+await req('/api/admin/skills','POST',{name:'bad'},403,{origin:'http://evil.invalid'});
+const profile=(await (await req('/api/admin/profile')).json())[0];
+await req('/api/admin/profile','PUT',{...profile,availability:'Kiểm thử cập nhật Link Me'});assert.match(await (await req('/')).text(),/Kiểm thử cập nhật Link Me/);
+await req('/api/admin/profile','PUT',profile);
+for(const [resource,data] of Object.entries({skills:{name:'Kiểm thử',category:'Test',level:80,sort_order:99},education:{title:'Kiểm thử',organization:'Test',period:'2026',description:'Dữ liệu kiểm thử',sort_order:99},experience:{title:'Kiểm thử',organization:'Test',period:'2026',description:'Dữ liệu kiểm thử',sort_order:99},social_links:{label:'Kiểm thử',url:'https://example.com',sort_order:99}})){
+ const id=(await(await req('/api/admin/'+resource,'POST',data,201)).json()).id;
+ await req('/api/admin/'+resource+'/'+id,'PUT',{...data,sort_order:98});
+ assert.ok((await(await req('/api/admin/'+resource)).json()).some(x=>x.id===id&&x.sort_order===98));
+ await req('/api/admin/'+resource+'/'+id,'DELETE');}
+await req('/api/admin/skills','POST',{name:'bad',category:'test',level:101},400);
+const slug='test-'+randomBytes(4).toString('hex'),project={slug,title:'Dự án kiểm thử',summary:'Mô tả',description:'Kiểm thử bản nháp và công khai',technologies:'Next.js, MySQL',image_url:'/projects/link-me.svg',github_url:'https://github.com/dtc245200478',demo_url:'',published:false,sort_order:99};
+const id=(await(await req('/api/admin/projects','POST',project,201)).json()).id;
+await req('/projects/'+slug,'GET',undefined,404);await req('/api/admin/projects','POST',project,409);
+await req('/api/admin/projects/'+id,'PUT',{...project,github_url:'javascript:alert(1)'},400);
+await req('/api/admin/projects/'+id,'PUT',{...project,published:true});await req('/projects/'+slug);
+const png=await sharp({create:{width:32,height:32,channels:3,background:'#456b3b'}}).png().toBuffer();const form=new FormData();form.set('file',new File([png],'test.png',{type:'image/png'}));const upload=await(await req('/api/admin/media','POST',form,201)).json();const img=await req(upload.url);assert.equal(img.headers.get('content-type'),'image/webp');
+const invalid=new FormData();invalid.set('file',new File(['<svg/>'],'x.svg',{type:'image/svg+xml'}));await req('/api/admin/media','POST',invalid,400);
+await req('/api/admin/projects/'+id,'PUT',{...project,published:true,image_url:upload.url});await req('/api/admin/projects/'+id,'DELETE');
+const newPassword=randomBytes(24).toString('hex');
+await req('/api/admin/password','POST',{currentPassword:password,newPassword:'short'},400);
+await req('/api/admin/password','POST',{currentPassword:password,newPassword});await req('/api/admin/session','GET',undefined,401);
+csrf='';cookie='';csrf=(await(await req('/api/admin/login','POST',{username:'admin',password:newPassword})).json()).csrf;
+await req('/api/admin/password','POST',{currentPassword:newPassword,newPassword:password});csrf='';cookie='';csrf=(await(await req('/api/admin/login','POST',{username:'admin',password})).json()).csrf;
+await req('/api/admin/diagnostics/error','POST',{},500);
+await req('/api/admin/logout','POST',{});await req('/api/admin/session','GET',undefined,401);
+const db=await mysql.createConnection({host:process.env.DB_HOST,user:process.env.DB_USER,password:readFileSync(process.env.DB_PASSWORD_FILE,'utf8').trim(),database:'linkme'});
+const [a]=await db.query('SELECT password_hash FROM admins WHERE username=?',['admin']);assert.ok(!a[0].password_hash.includes(password));assert.match(a[0].password_hash,/^[a-f0-9]+:[a-f0-9]+$/);
+const [[n]]=await db.query('SELECT COUNT(*) n FROM profile');assert.equal(n.n,1);await db.end();
+console.log(JSON.stringify({status:'PASS',checks:count,features:['public-pages','admin-auth','csrf','origin','all-crud','draft-publish','duplicate-slug','upload','invalid-upload','password-change','logout','security-headers','db-hash'],time:new Date().toISOString()}));

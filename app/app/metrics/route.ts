@@ -1,0 +1,1 @@
+import {telemetry} from '@/lib/telemetry';export const dynamic='force-dynamic';export async function GET(){const r=telemetry().registry;return new Response(await r.metrics(),{headers:{'Content-Type':r.contentType}});}

@@ -1,0 +1,36 @@
+{
+  "desktop": {
+    "status": "PASS",
+    "tables": {
+      "admins": 1,
+      "profile": 1,
+      "skills": 6,
+      "education": 1,
+      "experience": 1,
+      "projects": 3,
+      "social_links": 1,
+      "media": 1,
+      "sessions": 1
+    },
+    "images": 1,
+    "checks": 53,
+    "restart_and_reseed": "unchanged"
+  },
+  "wsl": {
+    "status": "PASS",
+    "tables": {
+      "admins": 1,
+      "profile": 1,
+      "skills": 6,
+      "education": 1,
+      "experience": 1,
+      "projects": 3,
+      "social_links": 1,
+      "media": 1,
+      "sessions": 0
+    },
+    "images": 1,
+    "checks": 53,
+    "restart_and_reseed": "unchanged"
+  }
+}

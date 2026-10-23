@@ -1,0 +1,1 @@
+import Link from 'next/link';export default function NotFound(){return <main className="wrap detail"><div className="section-kicker">404</div><h1>Trang chưa có ở đây.</h1><p>Dự án có thể chưa được công khai hoặc đường dẫn đã thay đổi.</p><Link className="button primary" href="/">Về Link Me ↗</Link></main>}

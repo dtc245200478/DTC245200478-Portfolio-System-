@@ -69,3 +69,17 @@ Mật khẩu admin dùng scrypt, phiên lưu hash trong MySQL, cookie HttpOnly/S
 1. Website portfolio/admin, MySQL, phpMyAdmin, Nginx và hardening cơ bản.
 2. Prometheus, Grafana, cAdvisor và exporter Nginx/MySQL.
 3. Loki, Promtail, hardening hoàn chỉnh và báo cáo có minh chứng.
+
+## Giám sát
+
+Mở Grafana tại http://localhost:3004, tài khoản `admin`, mật khẩu trong `.local/secrets/grafana_password`. Dashboard **Link Me | Tổng quan vận hành** tự nạp với 10 panel. Prometheus ở http://localhost:9093; `/targets` có 5 job `prometheus`, `linkme`, `nginx`, `mysql`, `cadvisor`. Chờ khoảng 30 giây sau lần chạy đầu để có rate/CPU.
+
+```powershell
+Get-Content scripts/check-services.mjs -Raw | docker --context desktop-linux compose exec -T app node --input-type=module
+```
+
+```sh
+docker compose exec -T app node --input-type=module < scripts/check-services.mjs
+```
+
+Script xác nhận target up và CPU/RAM của app, Nginx, MySQL thuộc project `linkme13`; việc chỉ có metrics của Docker host không được coi là đạt. cAdvisor cần quyền privileged và đọc cgroup/socket của host, là ngoại lệ được ghi rõ. Không publish exporter ra host. Alert LinkMeTargetDown kích hoạt khi target giám sát mất trên 1 phút; chưa cấu hình gửi thông báo ra ngoài.

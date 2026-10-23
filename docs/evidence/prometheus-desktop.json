@@ -1,0 +1,130 @@
+{
+  "status": "success",
+  "data": {
+    "activeTargets": [
+      {
+        "discoveredLabels": {
+          "__address__": "cadvisor:8080",
+          "__metrics_path__": "/metrics",
+          "__scheme__": "http",
+          "__scrape_interval__": "15s",
+          "__scrape_timeout__": "10s",
+          "job": "cadvisor"
+        },
+        "labels": {
+          "instance": "cadvisor:8080",
+          "job": "cadvisor"
+        },
+        "scrapePool": "cadvisor",
+        "scrapeUrl": "http://cadvisor:8080/metrics",
+        "globalUrl": "http://cadvisor:8080/metrics",
+        "lastError": "",
+        "lastScrape": "2026-10-23T05:31:13.334917015Z",
+        "lastScrapeDuration": 0.067849656,
+        "health": "up",
+        "scrapeInterval": "15s",
+        "scrapeTimeout": "10s"
+      },
+      {
+        "discoveredLabels": {
+          "__address__": "app:3000",
+          "__metrics_path__": "/metrics",
+          "__scheme__": "http",
+          "__scrape_interval__": "15s",
+          "__scrape_timeout__": "10s",
+          "job": "linkme"
+        },
+        "labels": {
+          "instance": "app:3000",
+          "job": "linkme"
+        },
+        "scrapePool": "linkme",
+        "scrapeUrl": "http://app:3000/metrics",
+        "globalUrl": "http://app:3000/metrics",
+        "lastError": "",
+        "lastScrape": "2026-10-23T05:31:10.122036102Z",
+        "lastScrapeDuration": 0.009279592,
+        "health": "up",
+        "scrapeInterval": "15s",
+        "scrapeTimeout": "10s"
+      },
+      {
+        "discoveredLabels": {
+          "__address__": "mysqld-exporter:9104",
+          "__metrics_path__": "/metrics",
+          "__scheme__": "http",
+          "__scrape_interval__": "15s",
+          "__scrape_timeout__": "10s",
+          "job": "mysql"
+        },
+        "labels": {
+          "instance": "mysqld-exporter:9104",
+          "job": "mysql"
+        },
+        "scrapePool": "mysql",
+        "scrapeUrl": "http://mysqld-exporter:9104/metrics",
+        "globalUrl": "http://mysqld-exporter:9104/metrics",
+        "lastError": "",
+        "lastScrape": "2026-10-23T05:31:05.779376247Z",
+        "lastScrapeDuration": 0.084386933,
+        "health": "up",
+        "scrapeInterval": "15s",
+        "scrapeTimeout": "10s"
+      },
+      {
+        "discoveredLabels": {
+          "__address__": "nginx-exporter:9113",
+          "__metrics_path__": "/metrics",
+          "__scheme__": "http",
+          "__scrape_interval__": "15s",
+          "__scrape_timeout__": "10s",
+          "job": "nginx"
+        },
+        "labels": {
+          "instance": "nginx-exporter:9113",
+          "job": "nginx"
+        },
+        "scrapePool": "nginx",
+        "scrapeUrl": "http://nginx-exporter:9113/metrics",
+        "globalUrl": "http://nginx-exporter:9113/metrics",
+        "lastError": "",
+        "lastScrape": "2026-10-23T05:31:10.796982671Z",
+        "lastScrapeDuration": 0.004366518,
+        "health": "up",
+        "scrapeInterval": "15s",
+        "scrapeTimeout": "10s"
+      },
+      {
+        "discoveredLabels": {
+          "__address__": "prometheus:9090",
+          "__metrics_path__": "/metrics",
+          "__scheme__": "http",
+          "__scrape_interval__": "15s",
+          "__scrape_timeout__": "10s",
+          "job": "prometheus"
+        },
+        "labels": {
+          "instance": "prometheus:9090",
+          "job": "prometheus"
+        },
+        "scrapePool": "prometheus",
+        "scrapeUrl": "http://prometheus:9090/metrics",
+        "globalUrl": "http://prometheus:9090/metrics",
+        "lastError": "",
+        "lastScrape": "2026-10-23T05:31:05.818456011Z",
+        "lastScrapeDuration": 0.037987521,
+        "health": "up",
+        "scrapeInterval": "15s",
+        "scrapeTimeout": "10s"
+      }
+    ],
+    "droppedTargets": [],
+    "droppedTargetCounts": {
+      "cadvisor": 0,
+      "linkme": 0,
+      "mysql": 0,
+      "nginx": 0,
+      "prometheus": 0
+    }
+  }
+}

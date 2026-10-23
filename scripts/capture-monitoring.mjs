@@ -1,0 +1,1 @@
+const r=await fetch('http://prometheus:9090/api/v1/targets');const d=await r.json();console.log(JSON.stringify(d.data.activeTargets.map(t=>({job:t.labels.job,health:t.health,error:t.lastError})),null,2));
